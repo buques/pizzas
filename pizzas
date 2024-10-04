@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+<script src="script.js" defer></script>
+
+    <title>Compra por WhatsApp</title>
+    <style>
+        /* Estilos generales */
+        body {
+           background-color:#20202a;
+            position: 
+            font-family: 
+justify-content:center;
+display:flex;
+flex-direction: column;
+align-items:center;
+        }
+       .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    width:100%;
+    justify-content:center;
+    text-align:center;
+}
+
+.card {
+    margin:auto;
+    width: calc(48% - 2px); /* Calcula el ancho para que quepan dos tarjetas por fila */
+    border: px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.card img {
+    width: 100%;
+    height: 120px;
+    border-bottom: 1px solid #ccc;
+}
+
+.card-content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.card h2 {
+    text-align:left;
+    width:100%;
+    font-size: 16px;
+    margin: 10px 0;
+    color: #333;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    text-overflow:ellipsis;
+    margin:5px 2px;
+    
+}
+
+.card p {
+    font-size: 14px;
+    color: #666;
+    margin:2px 2px;
+    text-align: left;
+    flex-grow: 1;
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    text-overflow:ellipsis;
+}
+
+.card .precio {
+    font-size: 18px;
+    color: #00CED1;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: left;
+    margin:5px 2px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    width:100%;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    gap:10px;
+    background:#ff7d02;
+    border-radius:8px;
+    padding:5px 0;
+}
+
+
+        .button-container button {
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: ;
+            border: 0;
+          
+        }
+
+        .cantidad-span {
+            font-size: 16px;
+            margin-right:2px;
+            font-weight: bold;
+            color:black;
+        }
+.button-container .add {
+            background-color:white; border-radius:50%;padding:5px 5px; width:35px; height:35px;border:2px solid green;
+        }
+
+        .button-container .remove {
+            background-color:white; border-radius:50%;padding:5px 5px; width:35px; height:35px;border:2px solid red;
+        }
+
+        .button-container .add::before {
+            content: '➕';
+            font-size:14px;
+            color:White;
+        }
+
+        .button-container .remove::before {
+            content: '➖';
+            font-size:14px;
+            color: ;
+        }
+
+        /* Botón flotante del carrito */
+        .carrito-flotante {
+            position: fixed ;
+            bottom: 40px;
+            right: 20px;
+            background-color: #00CED1;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 30px;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+        }
+.carrito-flotante {
+    position: fixed; /* Añadir para posicionar el span de notificación */
+}
+
+.carrito-notificacion {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+        .carrito-flotante:hover{
+            background-color:#166866
+        }
+        .precio{
+            color:yellow;
+            margin-right:10px;
+            font-weight:bold;
+            font-size:18px;
+         }
+        /* Estilos del modal */
+        .modalCard {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #f0ffff;
+    padding: 20px;
+    border-radius: 10px;
+    max-height: 80vh;
+    width: 80%;
+    text-align: center;
+    overflow-y:auto;
+}
+#question{
+margin-top:10px;
+height:70px;
+}
+
+.modal-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+#modalDescription{
+text-align:justify;
+}
+
+#modalPrice {
+color:#00CED1;
+font-weight:bold;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+       #modal {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+       width: 100%;
+       height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+ }
+
+        #modalContent{
+            background-color:#f0ffff ;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #modalContent label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        #modalContent input[type="text"],
+        #modalContent input[type="number"],
+        #modalContent select,
+        #modalContent textarea {
+            width: calc(100% - 10px);
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .modal-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .modal-button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+         .modal-button-container button {
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 48%;
+        }
+        
+
+        .modal-button-container button:last-child {
+            background-color: #dc3545;
+        }
+
+        .modal-button-container button:hover {
+            background-color:blue ;
+        }
+
+        .modal-button-container button:last-child:hover {
+            background-color: #f0ffff;
+        }
+
+.filter-boton-filtros{
+    overflow-x: auto; /* Permite el desplazamiento horizontal */
+    white-space: nowrap; /* Evita que los botones se dividan en varias líneas */
+    margin: 15px 0;
+    max-width:100%;
+    
+}
+
+.filter-buttons {
+    display: inline-flex; /* Permite que los botones se alineen en una fila y sean desplazables */
+    justify-content: center;
+}
+
+.filter-buttons button {
+    padding: 15px 15px;
+    margin: 0 5px;
+    background-color: #00CED1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100px;
+}
+
+.filter-buttons button:hover {
+    background-color: #20202a;
+}
+/* Estilo para la barra de entrada de texto */
+#question {
+    width: 100%; /* Ajusta el ancho según tus necesidades */
+    padding: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 14px; /* Tamaño de fuente */
+    margin-right: 10px; /* Espacio a la derecha del textarea */
+}
+
+/* Estilo para el contenedor de los botones y la barra de entrada */
+#buttonContainer {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+    gap: 10px; /* Espacio entre la barra de entrada y el botón */
+}
+
+/* Estilo para el botón de enviar pregunta */
+#questionButton {
+    background-color: orange;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+/* Slider styles */
+.slider-container {
+    position: relative;
+    min-width: 100%;
+    margin: auto;
+    overflow: hidden;
+    margin-bottom:0px;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+    border-radius:6px;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.5);
+ display:none;
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Estilo para el campo de búsqueda */
+        .search-container {
+            margin-bottom: 0px;
+            display: flex;
+            justify-content: center;
+            width:100%;
+        }
+
+        #search {
+            width: 100%;
+            padding:10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top:6px;
+        }
+
+        #enviarWhatsApp{
+            background-color:Green;
+            color:White;
+            border:0px;
+        }
+        #enviarWhatsApp:hover{
+           background-color:#f0ffff;
+           color:black;
+        }
+</style>
+</head>
+<body>
+
+<!-- Slider -->
+<div class="slider-container">
+    <div class="slider">
+        <div class="slide"><img src="https://i.postimg.cc/5y4pNJTK/Grid-Art-20240914-164829365.jpg" alt="Slide 1"></div>
+        <div class="slide"><img src="https://i.postimg.cc/d0WVSjv7/Grid-Art-20240914-163109698.jpg" alt="Slide 2"></div>
+        <div class="slide"><img src="https://i.postimg.cc/fW1jrxTg/Grid-Art-20240914-165906430.jpg" alt="Slide 2"></div>
+        <div class="slide"><img src="https://i.postimg.cc/YqfGzg4F/Grid-Art-20240914-170946100.jpg" alt="Slide 3"></div>
+    </div>
+    <button class="prev">❮</button>
+    <button class="next">❯</button>
+</div>
+
+<!-- Campo de búsqueda -->
+
+<div class="search-container">
+    <input type="text" id="search" placeholder="Buscar productos...">
+</div>
+
+<!-- Botones de filtro -->
+<div class="filter-boton-filtros">
+<div class="filter-buttons">
+<button onclick="filtrarPorCategoria('all')">Todos</button>
+    <button onclick="filtrarPorCategoria('familiares')">Familiares</button>
+    <button onclick="filtrarPorCategoria('medianas')">Medianas</button>
+    <button onclick="filtrarPorCategoria('bambinas')">Bambinas</button>
+    <button onclick="filtrarPorCategoria('spaghettis')">Spaghettis</button>
+    <button onclick="filtrarPorCategoria('calzones')">Calzones</button>
+    <button onclick="filtrarPorCategoria('comidas')">Comidas</button>
+</div></div></div>
+
+<div class="cards-container">
+
+<div class="card" data-categoria="bambinas" data-id="Pizza Bambina" data-precio="400" data-name="Pizza Bambina">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/QN94xycx/D4-PC26-EIT5-BW7-JAMNQRUAXGMGQ.jpg" alt="Pizza Bambina">
+        <div class="card-content">
+            <h2>Pizza Bambina</h2>
+            <p>Pizza pequeña de 22 cm. Pizza convencional cubana.</p>
+            <span class="precio">$400</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="bambinas" data-id="Bambina con 1 agrego" data-precio="450" data-name="Bambina con 1 agrego">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/ZYGf9xLP/1604826176-828758-1604826298-noticia-normal-recorte1.jpg" alt="Bambina con 1 agrego">
+        <div class="card-content">
+            <h2>Bambina con 1 agrego</h2>
+            <p>Pizza pequeña de 22 cm. Pizza Bambina con 1 agrego.</p>
+            <span class="precio">$450</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="bambinas" data-id="Bambina con 2 agregos" data-precio="500" data-name="Bambina con 2 agregos">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/XvPfRnHK/images-9.jpg" alt="Bambina con 2 agregos">
+        <div class="card-content">
+            <h2>Bambina con 2 agregos</h2>
+            <p>Pizza pequeña de 22 cm. Pizza Bambina con 2 agregos.</p>
+            <span class="precio">$500</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+<div class="card" data-categoria="familiares" data-id="Familiar Napolitana" data-precio="2000" data-name="Familiar Napolitana">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/NFZBmQTb/pizza-mixta.jpg" alt="Familiar Napolitana">
+        <div class="card-content">
+            <h2>Familiar Napolitana</h2>
+            <p>Pizza familiar de 45 cm. Napolitana cubana.</p>
+            <span class="precio">$2000</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="familiares" data-id="Familiar de jamón y chorizo " data-precio="2300" data-name="Familiar de jamón y chorizo ">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/hj5BRKCg/Pizza-familiar-de-chorizo-domicilios-alamesacuba-com.jpg" alt="Familiar de jamón y chorizo ">
+        <div class="card-content">
+            <h2>Familiar de jamón y chorizo </h2>
+            <p>Pizza familiar de 45cm, de jamón y chorizo.</p>
+            <span class="precio">$2300</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="familiares" data-id="Familiar Hawaiana " data-precio="2300" data-name="Familiar Hawaiana ">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/DfPNGvQz/IMG-20220813-WA0019-1.jpg" alt="Familiar Hawaiana ">
+        <div class="card-content">
+            <h2>Familiar Hawaiana </h2>
+            <p>Pizza familiar Hawaiana de 45 cm. Hawaiana cubana.</p>
+            <span class="precio">$2300</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="familiares" data-id="Familiar con 3 agregos" data-precio="2500" data-name="Familiar con 3 agregos">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/HLbcLPqf/1726367140685.jpg" alt="Familiar con 3 agregos">
+        <div class="card-content">
+            <h2>Familiar con 3 agregos</h2>
+            <p>Familiar de 45 cm. Puede escoger tres agregos para su pizza: jamón, chorizo, salchichón, pimiento, piña, cebolla </p>
+            <span class="precio">$2500</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="familiares" data-id="Familiar Mixta" data-precio="2700" data-name="Familiar Mixta">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/63w74fwT/1726367144984.jpg" alt="Familiar Mixta">
+        <div class="card-content">
+            <h2>Familiar Mixta</h2>
+            <p>Familiar Mixta de 45 cm, con varios agregos: cebolla, jamón, salchichón, pimiento, piña, chorizo.</p>
+            <span class="precio">$2700</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="familiares" data-id="Familiar Básica" data-precio="2200" data-name="Familiar Básica">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/Qd2KhryQ/1726367132787.jpg" alt="Familiar Básica">
+        <div class="card-content">
+            <h2>Familiar Básica</h2>
+            <p>La pizza familiar básica. A elección un agrego para la pizza.</p>
+            <span class="precio">$2200</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="familiares" data-id="Familiar Super" data-precio="3600" data-name="Familiar Super">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/Vkr0xNDs/1726367151395.jpg" alt="Familiar Super">
+        <div class="card-content">
+            <h2>Familiar Super</h2>
+            <p>Pizza de 55x40 cm. Hasta 6 agregos: jamón, salchichón, chorizo, pimiento, piña, cebolla.</p>
+            <span class="precio">$3600</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+<div class="card" data-categoria="medianas" data-id="Pizza Napolitana" data-precio="1000" data-name="Pizza Napolitana">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/DyD8PTF9/Pizza-napolitana-Domicilios-alamesacuba-com-2.jpg" alt="Pizza Napolitana">
+        <div class="card-content">
+            <h2>Pizza Napolitana</h2>
+            <p>Pizza de mediana de 30x30 cm. Napolitana cubana.</p>
+            <span class="precio">$1000</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="medianas" data-id="Napolitana Súper " data-precio="1300" data-name="Napolitana Súper ">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/xTkdC4Ht/Pizza-Napo-Todo-Pizzas-A-Domicilio-alamesacuba-com.jpg" alt="Napolitana Súper ">
+        <div class="card-content">
+            <h2>Napolitana Súper </h2>
+            <p>Pizza mediana de 30x30 cm. Pizza napolitana con agrego de queso.</p>
+            <span class="precio">$1300</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="medianas" data-id="Pizza hawaiana" data-precio="1300" data-name="Pizza hawaiana">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/T3Fg1bpW/IMG-20240914-222107.jpg" alt="Pizza hawaiana">
+        <div class="card-content">
+            <h2>Pizza hawaiana</h2>
+            <p>Pizza mediana 30x30 cm. Pizza hawaiana cubana.</p>
+            <span class="precio">$1300</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="medianas" data-id="Pizza de Jamón" data-precio="1100" data-name="Pizza de Jamón">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/0NSmwNwX/1726366686771.jpg" alt="Pizza de Jamón">
+        <div class="card-content">
+            <h2>Pizza de Jamón</h2>
+            <p>Pizza mediana de 30x30 cm. Pizza con agrego de jamón.</p>
+            <span class="precio">$1100</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="medianas" data-id="Pizza Mixta" data-precio="1600" data-name="Pizza Mixta">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/50MzqM54/1726366629124.jpg" alt="Pizza Mixta">
+        <div class="card-content">
+            <h2>Pizza Mixta</h2>
+            <p>Pizza mediana de 30x30 cm. Con varios agregos: jamón, chorizo, salchichón, cebolla, pimiento y piña.</p>
+            <span class="precio">$1600</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+<div class="card" data-categoria="spaghettis" data-id="Spaghetti Nápoles" data-precio="900" data-name="Spaghetti Nápoles">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/D0dBd0kc/bolognesa.jpg" alt="Spaghetti Nápoles">
+        <div class="card-content">
+            <h2>Spaghetti Nápoles</h2>
+            <p>Spaghettis con salsa de tomate y queso.</p>
+            <span class="precio">$900</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="spaghettis" data-id="Spaghettis Virginia" data-precio="1100" data-name="Spaghettis Virginia">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/593B3ZQp/sddefault.jpg" alt="Spaghettis Virginia">
+        <div class="card-content">
+            <h2>Spaghettis Virginia</h2>
+            <p>Espaguetis con jamón y queso.</p>
+            <span class="precio">$1100</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="spaghettis" data-id="Spaghettis Boloñesa" data-precio="1200" data-name="Spaghettis Boloñesa">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/WbYMRgnk/1726357448330.jpg" alt="Spaghettis Boloñesa">
+        <div class="card-content">
+            <h2>Spaghettis Boloñesa</h2>
+            <p>Espaguetis con carne molida y salsa de tomate </p>
+            <span class="precio">$1200</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="spaghettis" data-id="Spaghettis Duper" data-precio="1400" data-name="Spaghettis Duper">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/P5L1dJ3F/1726357423203.jpg" alt="Spaghettis Duper">
+        <div class="card-content">
+            <h2>Spaghettis Duper</h2>
+            <p>Espaguetis con salsa de tomate, queso y albóndigas de carne </p>
+            <span class="precio">$1400</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+ <div class="card" data-categoria="calzones" data-id="Calzone de queso" data-precio="1000" data-name="Calzone de queso">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/gJMcLBCN/1726337221314.jpg" alt="Calzone de queso">
+        <div class="card-content">
+            <h2>Calzone de queso</h2>
+            <p>Calzone de queso...contiene queso en su interior.</p>
+            <span class="precio">$1000</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="calzones" data-id="Calzone de jamón y queso" data-precio="1300" data-name="Calzone de jamón y queso">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/rFGVSs2D/IMG-20240914-141215.jpg" alt="Calzone de jamón y queso">
+        <div class="card-content">
+            <h2>Calzone de jamón y queso</h2>
+            <p>Contiene jamón y queso en su interior</p>
+            <span class="precio">$1300</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="calzones" data-id="Calzone de jamón y chorizo" data-precio="1300" data-name="Calzone de jamón y chorizo ">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/rFGVSs2D/IMG-20240914-141215.jpg" alt="Calzone de jamón y chorizo ">
+        <div class="card-content">
+            <h2>Calzone de jamón y chorizo </h2>
+            <p>Contiene jamón y chorizo en su interior.</p>
+            <span class="precio">$1300</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="calzones" data-id="Calzone de vegetales" data-precio="1200" data-name="Calzone de vegetales ">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/VsdDhZfw/receta-calzone-verduras.jpg" alt="Calzone de vegetales ">
+        <div class="card-content">
+            <h2>Calzone de vegetales </h2>
+            <p>Contiene vegetales en su interior.</p>
+            <span class="precio">$1200</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="calzones" data-id="Super Calzone de queso" data-precio="2000" data-name="Super Calzone de queso">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/jSZRF15K/1726337233329.jpg" alt="Super Calzone de queso">
+        <div class="card-content">
+            <h2>Super Calzone de queso</h2>
+            <p>Es grande, para tres. Contiene queso en su interior.</p>
+            <span class="precio">$2000</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="calzones" data-id="Super Calzone de jamón y queso" data-precio="2200" data-name="Super Calzone de jamón y queso">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/2ybqkD14/1691788954-receta-calzone.png" alt="Super Calzone de jamón y queso">
+        <div class="card-content">
+            <h2>Super Calzone de jamón y queso</h2>
+            <p>Es grande, para tres personas. Contiene jamón y queso en su interior.</p>
+            <span class="precio">$2200</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="calzones" data-id="Super Calzone de vegetales" data-precio="2200" data-name="Super Calzone de vegetales ">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/VsdDhZfw/receta-calzone-verduras.jpg" alt="Super Calzone de vegetales ">
+        <div class="card-content">
+            <h2>Super Calzone de vegetales </h2>
+            <p>Es grande, para tres personas. Contiene vegetales en su interior.</p>
+            <span class="precio">$2200</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="calzones" data-id="Super Calzone con 4 agregos " data-precio="2700" data-name="Super Calzone con 4 agregos ">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/gJMcLBCN/1726337221314.jpg" alt="Super Calzone con 4 agregos ">
+        <div class="card-content">
+            <h2>Super Calzone con 4 agregos </h2>
+            <p>Es grande, para tres personas. Contiene cuatro agregos en su interior.</p>
+            <span class="precio">$2700</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div>
+
+
+<div class="card" data-categoria="calzones" data-id="Super Calzone mixto" data-precio="2900" data-name="Super Calzone mixto">
+    <div class="card-content-wrapper">
+        <img src="https://i.postimg.cc/VLTyTbQG/pizza-calzone-sabrosa.jpg" alt="Super Calzone mixto">
+        <div class="card-content">
+            <h2>Super Calzone mixto</h2>
+            <p>Es grande, para tres personas. Contiene varios agregos en su interior.</p>
+            <span class="precio">$2900</span>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="add"></button>
+        <span class="cantidad-span">0</span>
+        <button class="remove"></button>
+    </div>
+</div> </div>   
+
+
+<!-- Botón flotante del carrito -->
+<!-- Botón flotante del carrito -->
+
+<button class="carrito-flotante" onclick="mostrarFormulario()">
+    🛒<span class="carrito-notificacion">0</span>
+</button>
+
+
+<!-- Modal para mostrar el carrito y hacer la compra -->
+<div id="modal">
+    <div id="modalContent">
+        <div class="modal-container">
+            <h3>Carrito de Compras</h3>
+            <div id="carritoDetalle"></div>
+            <div>
+
+<div>
+    <label for="subtotalEnvio"></label>
+<span style="display:none" id="subtotalEnvio"></span>
+</div> 
+               <label for="opcionesAgregos">Selecciona los agregos:</label>
+    <select id="opcionesAgregos" multiple>
+        <option value="pimiento" data-agrego="Pimiento">Pimiento</option>
+        <option value="chorizo" data-agrego="Chorizo">Chorizo</option>
+        <option value="tomate" data-agrego="Tomate">Tomate</option>
+        <option value="jamón" data-agrego="Jamón">Jamón</option>
+        <option value="aceituna" data-agrego="Aceituna">Aceituna</option>
+        <option value="huevo frito" data-agrego="Huevo frito">Huevo frito</option>
+        <option value="piña" data-agrego="Piña">Piña</option>
+        <option value="cebolla" data-agrego="Cebolla">Cebolla</option>
+        <option value="berenjena" data-agrego="Berenjena">Berenjena</option>
+        <option value="atún" data-agrego="Atún">Atún</option>
+        <option value="Queso Gouda" data-agrego="Queso Gouda">Queso Gouda</option>
+        <option value="Queso Patagrás" data-agrego="Queso Patagrás">Queso Patagrás</option>
+    </select>
+    
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" required><br>
+                <label for="telefono">Teléfono:</label>
+                <input type="number" id="telefono" required><br>
+                <label for="opcionesEnvio">Municipio:</label>
+               
+<select id="opcionesEnvio">
+    <option value="0">Seleccionar...</option>
+<option value="550.00" data-municipio="Centro Habana">Centro Habana - 550 CUP</option>
+<option value="500.00" data-municipio="Habana Vieja">Habana Vieja - 500 CUP</option>
+<option value="550.00" data-municipio="Vedado">Vedado - 550 CUP</option>
+<option value="500.00" data-municipio="Cerro">Cerro - 500 CUP</option>
+<option value="650.00" data-municipio="Cerro Pelado">Cerro Pelado - 650 CUP</option>
+<option value="500.00" data-municipio="Casino Deportivo">Casino Deportivo - 500 CUP</option>
+
+<option value="750.00" data-municipio="Playa">Playa (hasta Calle 70) - 750 CUP</option>
+<option value="1000.00" data-municipio="Rpto Flores">Rpto Flores - 1000 CUP</option>
+<option value="2000.00" data-municipio="Jaimanitas">Jaimanitas - 2000 CUP</option>
+<option value="2500.00" data-municipio="Santa Fe">Santa Fe - 2500 CUP</option>
+
+<option value="600.00" data-municipio="Puentes Grandes">Puentes Grandes - 600 CUP</option>
+<option value="700.00" data-municipio="Marianao">Marianao (hasta 100) - 700 CUP</option>
+<option value="850.00" data-municipio="Marianao">Marianao (después de 100) - 850 CUP</option>
+
+<option value="1000.00" data-municipio="Lisa">Lisa - 1000 CUP</option>
+<option value="1400.00" data-municipio="Arroyo Arena">Arroyo Arena - 1400 CUP</option>
+<option value="1500.00" data-municipio="Barbosa">Barbosa - 1500 CUP</option>
+<option value="1600.00" data-municipio="Punta Brava">Punta Brava - 1600 CUP</option>
+
+<option value="350.00" data-municipio="Luyano">Luyano - 350 CUP</option>
+<option value="350.00" data-municipio="Santo Suárez">Santo Suárez - 350 CUP</option>
+<option value="350.00" data-municipio="Víbora">Víbora - 350 CUP</option>
+<option value="350.00" data-municipio="Lawton">Lawton (hasta Calle 15) - 350 CUP</option>
+<option value="500.00" data-municipio="Lawton">Lawton (después de Calle 15) - 500 CUP</option>
+<option value="550.00" data-municipio="Sevillano">Sevillano - 550 CUP</option>
+<option value="600.00" data-municipio="Los Pinos">Los Pinos - 600 CUP</option>
+<option value="600.00" data-municipio="Miraflores Viejo y Moderno">Miraflores Viejo y Moderno - 600 CUP</option>
+<option value="500.00" data-municipio="Santa Amalia">Santa Amalia - 500 CUP</option>
+<option value="500.00" data-municipio="La Palma">La Palma - 500 CUP</option>
+<option value="500.00" data-municipio="Víbora Park">Víbora Park - 500 CUP</option>
+<option value="800.00" data-municipio="Mantilla">Mantilla - 800 CUP</option>
+<option value="800.00" data-municipio="Parraga">Parraga - 800 CUP</option>
+<option value="800.00" data-municipio="Poey">Poey - 800 CUP</option>
+<option value="800.00" data-municipio="El Calvario/Capry">El Calvario/Capry - 800 CUP</option>
+<option value="800.00" data-municipio="Güinera">Güinera - 800 CUP</option>
+<option value="1000.00" data-municipio="Rpto Eléctrico">Rpto Eléctrico - 1000 CUP</option>
+
+<option value="3000.00" data-municipio="Bejucal">Bejucal - 3000 CUP</option>
+<option value="1500.00" data-municipio="Lutgurdita">Lutgurdita - 1500 CUP</option>
+<option value="1200.00" data-municipio="Mazorra">Mazorra - 1200 CUP</option>
+<option value="1500.00" data-municipio="Mulgoba">Mulgoba - 1500 CUP</option>
+<option value="2000.00" data-municipio="Santiago de las Vegas">Santiago de las Vegas - 2000 CUP</option>
+<option value="2000.00" data-municipio="Reparto Guadalupe">Reparto Guadalupe - 2000 CUP</option>
+<option value="700.00" data-municipio="Aldabo/Alta Habana">Aldabo/Alta Habana - 700 CUP</option>
+<option value="850.00" data-municipio="Capdevila">Capdevila - 850 CUP</option>
+<option value="900.00" data-municipio="Rio Cristal">Rio Cristal - 900 CUP</option>
+<option value="1000.00" data-municipio="Fontanar">Fontanar - 1000 CUP</option>
+<option value="1200.00" data-municipio="Abel Santamaría">Abel Santamaría - 1200 CUP</option>
+<option value="1500.00" data-municipio="Wajay">Wajay - 1500 CUP</option>
+<option value="1500.00" data-municipio="Baluarte y Rio Verde">Baluarte y Rio Verde - 1500 CUP</option>
+<option value="500.00" data-municipio="Virgen del Camino">Virgen del Camino - 500 CUP</option>
+<option value="750.00" data-municipio="Barrio Obrero">Barrio Obrero - 750 CUP</option>
+<option value="750.00" data-municipio="Rpto California">Rpto California - 750 CUP</option>
+<option value="750.00" data-municipio="La Carolina">La Carolina - 750 CUP</option>
+<option value="750.00" data-municipio="Rocafort">Rocafort - 750 CUP</option>
+<option value="800.00" data-municipio="Alturas de Luyano">Alturas de Luyano - 800 CUP</option>
+<option value="800.00" data-municipio="Luyano Moderno">Luyano Moderno - 800 CUP</option>
+<option value="800.00" data-municipio="La Cuevita">La Cuevita - 800 CUP</option>
+<option value="800.00" data-municipio="Vista Hermosa">Vista Hermosa - 800 CUP</option>
+<option value="750.00" data-municipio="Monterrey">Monterrey - 750 CUP</option>
+<option value="750.00" data-municipio="Diezmero">Diezmero - 750 CUP</option>
+<option value="1100.00" data-municipio="San Francisco de Paula">San Francisco de Paula - 1100 CUP</option>
+
+<option value="1200.00" data-municipio="Cotorro">Cotorro (preguntar por la zona) - 1200 CUP</option>
+
+<option value="800.00" data-municipio="Regla">Regla - 800 CUP</option>
+<option value="1200.00" data-municipio="Casablanca">Casablanca - 1200 CUP</option>
+
+<option value="800.00" data-municipio="Chivas">Chivas - 800 CUP</option>
+<option value="700.00" data-municipio="Centro de Guanabacoa">Centro de Guanabacoa - 700 CUP</option>
+<option value="850.00" data-municipio="El Roble">El Roble - 850 CUP</option>
+<option value="850.00" data-municipio="El Nalon">El Nalon - 850 CUP</option>
+<option value="850.00" data-municipio="La Hata">La Hata - 850 CUP</option>
+<option value="1800.00" data-municipio="Ricabar/Puente de Santa Fe y Pueblo">Ricabar/Puente de Santa Fe y Pueblo - 1800 CUP</option>
+
+<option value="1300.00" data-municipio="Cojimar">Cojimar - 1300 CUP</option>
+<option value="1300.00" data-municipio="Alamar (hasta zona 14)">Alamar (hasta zona 14) - 1300 CUP</option>
+<option value="1500.00" data-municipio="Alamar (intermitente y micro X)">Alamar (intermitente y micro X) - 1500 CUP</option>
+
+<option value="3000.00" data-municipio="Guanabo">Guanabo - 3000 CUP</option>
+<option value="3500.00" data-municipio="Campo Florido">Campo Florido - 3500 CUP</option>
+</select>
+<br>
+
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion"><br>
+
+                <label for="nota">Sitio de Referencia:</label>
+                <textarea id="nota"></textarea><br>
+                
+            </div>
+
+            <div class="modal-button-container">
+                <button id="enviarWhatsApp" onclick="enviarWhatsApp()">Enviar a WhatsApp</button>
+                <button style="border:0px; color:white" onclick="cerrarModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Información-->
+<div id="infoModal" class="modalCard" style="display:none;">
+    <div class="modal-content">
+        <span id="closeModal" class="close">×</span>
+        <img id="modalImg" src="" alt="">
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <span id="modalPrice"></span>
+<form id="questionForm">
+            <input type="hidden" id="productDataId" value="">
+            <input type="hidden" id="productPrice" value="">
+            <textarea id="question" rows="4" cols="50" placeholder="Escribe tu pregunta aquí..." required></textarea><br>
+            <button id="questionButton" onclick="sendQuestion(event)">Enviar Pregunta</button>
+    </div>
+</div>
+
+<script>
+document.getElementById('search').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const products = document.querySelectorAll('.card');
+
+    products.forEach(function(product) {
+        const productName = product.getAttribute('data-name').toLowerCase();
+        if (productName.includes(searchTerm)) {
+            product.style.display = 'flex'; // Mostrar la tarjeta
+        } else {
+            product.style.display = 'none'; // Ocultar la tarjeta
+        }
+    });
+});
+
+document.getElementById('opcionesEnvio').addEventListener('change', function() {
+    const envioCosto = parseFloat(this.value);
+    const subtotalEnvioElement = document.getElementById('subtotalEnvio');
+    subtotalEnvioElement.textContent = `$${envioCosto.toFixed(2)}`;
+    actualizarCarritoDetalle();
+});
+
+
+
+let carrito = [];
+let carritoCantidad = 0;
+
+// Función para actualizar la cantidad en la tarjeta del producto
+function actualizarCantidadEnTarjeta(card, productoId) {
+    const cantidadSpan = card.querySelector('.cantidad-span');
+    const productoExistente = carrito.find(producto => producto.id === productoId);
+    cantidadSpan.textContent = productoExistente ? productoExistente.cantidad : 0;
+}
+
+function actualizarCarritoDetalle() {
+    const carritoDetalleElement = document.getElementById('carritoDetalle');
+    carritoDetalleElement.innerHTML = ''; // Limpiar contenido previo
+
+    // Si el carrito está vacío, mostrar mensaje
+    if (carrito.length === 0) {
+        carritoDetalleElement.innerHTML = '<p>Carrito vacío</p>';
+        return;
+    }
+
+    let subtotalTotal = 0;
+
+    // Generar el contenido del carrito
+    carrito.forEach(producto => {
+        const itemElement = document.createElement('div');
+        const itemTotal = producto.cantidad * producto.precio;
+        itemElement.innerHTML = `
+            <p><strong>Pedido:</strong> ${producto.id}</p>
+            <p><strong>Cantidad:</strong> ${producto.cantidad}</p>
+            <p><strong>Subtotal:</strong> $${itemTotal.toFixed(2)}</p>
+            <hr>
+        `;
+        carritoDetalleElement.appendChild(itemElement);
+        subtotalTotal += itemTotal;
+    });
+
+    // Agregar costo de envío y total
+    const opcionesEnvio = document.getElementById('opcionesEnvio');
+    const costoEnvio = parseFloat(opcionesEnvio.options[opcionesEnvio.selectedIndex].value);
+    
+    // Calcula el total correctamente
+    const total = subtotalTotal + costoEnvio;
+    const resumenElement = document.createElement('div');
+    resumenElement.innerHTML = `
+        <p><strong>Costo de envío:</strong> $${costoEnvio.toFixed(2)}</p>
+        <p><strong>Costo Total:</strong> $${total.toFixed(2)}</p>
+    `;
+    carritoDetalleElement.appendChild(resumenElement);
+}
+
+// Función para añadir productos al carrito
+function agregarAlCarrito(button) {
+    console.log("Añadiendo al carrito");  // <-- Agregar esta línea para depuración
+    const card = button.closest('.card');
+    const productoId = card.getAttribute('data-id');
+    const precio = parseFloat(card.getAttribute('data-precio'));
+    const productoExistente = carrito.find(producto => producto.id === productoId);
+
+    if (productoExistente) {
+        productoExistente.cantidad += 1;
+    } else {
+        carrito.push({ id: productoId, cantidad: 1, precio });
+    }
+
+    carritoCantidad += 1;
+    actualizarCantidadEnTarjeta(card, productoId);
+    actualizarCarritoNotificacion();
+    actualizarCarritoDetalle();
+}
+
+
+// Función para quitar productos del carrito
+function quitarDelCarrito(button) {
+    const card = button.closest('.card');
+    const productoId = card.getAttribute('data-id');
+    const productoExistente = carrito.find(producto => producto.id === productoId);
+
+    if (productoExistente && productoExistente.cantidad > 0) {
+        productoExistente.cantidad -= 1;
+        carritoCantidad -= 1;
+
+        if (productoExistente.cantidad === 0) {
+            carrito = carrito.filter(producto => producto.id !== productoId);
+        }
+    }
+
+    actualizarCantidadEnTarjeta(card, productoId);
+    actualizarCarritoNotificacion();
+    actualizarCarritoDetalle();
+}
+
+// Función para actualizar la notificación del carrito
+function actualizarCarritoNotificacion() {
+    const notificacionElement = document.querySelector('.carrito-notificacion');
+    notificacionElement.textContent = carritoCantidad;
+}
+
+// Función para mostrar el formulario de compra
+function mostrarFormulario() {
+    document.getElementById('modal').style.display = 'flex';
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+// Función para enviar el pedido por WhatsApp
+function enviarWhatsApp() {
+    const nombre = document.getElementById('nombre').value; 
+    const telefono = document.getElementById('telefono').value;
+    const direccion = document.getElementById('direccion').value;
+    const nota = document.getElementById('nota').value;
+    
+    // Recoger la opción seleccionada del select y el valor del atributo data-municipio
+    const selectEnvio = document.getElementById('opcionesEnvio');
+    const opcionesEnvio = selectEnvio.value;
+    const municipio = selectEnvio.options[selectEnvio.selectedIndex].getAttribute('data-municipio');
+
+const selectAgregos = document.getElementById('opcionesAgregos');
+            const opcionesSeleccionadas = Array.from(selectAgregos.selectedOptions);
+            const agregos = opcionesSeleccionadas.map(opcion => opcion.getAttribute('data-agrego'));
+            console.log(agregos);
+        
+
+    let mensaje = `FORMULARIO DE COMPRA \n`;
+
+    carrito.forEach(producto => {
+        mensaje += `\n*Producto:* ${producto.id}\n`;
+        mensaje += `*Cantidad:* ${producto.cantidad}\n`;
+        mensaje += `*Subtotal:* $${(producto.precio * producto.cantidad).toFixed(2)}\n\n`;
+    });
+    mensaje += `\n*Agregos:* ${agregos.join(', ')}\n`;
+    mensaje += `\n*Nombre:* ${nombre}`;
+mensaje += `\n*Teléfono:* ${telefono}`;
+mensaje += `\n*Municipio:* ${municipio}`;
+mensaje += `\n*Dirección:* ${direccion}`;
+mensaje += `\n*Punto de Referencia:* ${nota}`;
+mensaje += `\n*Mensajería:* $${opcionesEnvio}`;
+mensaje += `\n*Costo Total:* $${(parseFloat(opcionesEnvio) + carrito.reduce((acc, p) => acc + (p.precio * p.cantidad), 0)).toFixed(2)}`;
+
+
+    const url = `https://wa.me/5353040553?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, '_blank');
+}
+
+
+
+// Función para cerrar el modal de información
+function cerrarInfoModal() {
+    document.getElementById('infoModal').style.display = 'none';
+}
+
+// Función para enviar la pregunta a WhatsApp
+function sendQuestion(event) {
+    event.preventDefault(); // Previene el comportamiento por defecto del formulario (recarga de la página)
+
+    const question = document.getElementById('question').value.trim();
+    const producto = document.getElementById('productDataId').value; // Obtener el data-id del producto
+    const price = document.getElementById('productPrice').value; // Obtener el precio del producto
+    const phoneNumber = '5353040553'; // Reemplaza con tu número de WhatsApp
+
+    if (question === '') {
+   errorNombre.style.display="none"('Por favor, ingresa tu pregunta.');
+        return;
+    }
+
+    const message = encodeURIComponent(`Pregunta sobre el producto:\n*Producto:* ${producto}\n*Precio:* $${price}\n*Pregunta:* ${question}`);
+    const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+
+    // Redirigir al usuario a la URL de WhatsApp
+    window.open(whatsappURL, '_blank');
+}
+
+// Función para filtrar los productos por categoría
+function filtrarPorCategoria(categoria) {
+    const cards = document.querySelectorAll('.card');
+
+    cards.forEach(card => {
+        if (categoria === 'all' || card.getAttribute('data-categoria') === categoria) {
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// Función para mostrar el modal con la información del producto
+function mostrarModal(card) {
+    const imgSrc = card.querySelector('img').src;
+    const title = card.querySelector('h2').textContent;
+    const description = card.querySelector('p').textContent;
+    const price = card.querySelector('.precio').textContent;
+    const productId = card.getAttribute('data-id'); // Obtener el ID del producto
+    const productPrice = card.getAttribute('data-precio'); // Obtener el precio del producto
+
+    // Asignar la información del producto al modal
+    document.getElementById('modalImg').src = imgSrc;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalDescription').textContent = description;
+    document.getElementById('modalPrice').textContent = price;
+    document.getElementById('productDataId').value = productId;
+    document.getElementById('productPrice').value = productPrice;
+
+    // Mostrar el modal
+    document.getElementById('infoModal').style.display = 'flex';
+}
+
+// Manejador de clics para abrir el modal si se hace clic en la tarjeta
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', function(event) {
+        // Verifica si el clic fue en un botón para añadir o eliminar del carrito
+        const isAddOrRemoveButton = event.target.classList.contains('add') || event.target.classList.contains('remove');
+
+        // Si no es un botón, mostrar el modal
+        if (!isAddOrRemoveButton) {
+            mostrarModal(card);
+        }
+    });
+});
+
+// Función para añadir productos al carrito
+function agregarAlCarrito(button) {
+    const card = button.closest('.card');
+    const productoId = card.getAttribute('data-id');
+    const precio = parseFloat(card.getAttribute('data-precio'));
+    const productoExistente = carrito.find(producto => producto.id === productoId);
+
+    if (productoExistente) {
+        productoExistente.cantidad += 1;
+    } else {
+        carrito.push({ id: productoId, cantidad: 1, precio });
+    }
+
+    carritoCantidad += 1;
+    actualizarCantidadEnTarjeta(card, productoId);
+    actualizarCarritoNotificacion();
+    actualizarCarritoDetalle();
+}
+
+// Función para quitar productos del carrito
+function quitarDelCarrito(button) {
+    const card = button.closest('.card');
+    const productoId = card.getAttribute('data-id');
+    const productoExistente = carrito.find(producto => producto.id === productoId);
+
+    if (productoExistente && productoExistente.cantidad > 0) {
+        productoExistente.cantidad -= 1;
+        carritoCantidad -= 1;
+
+        if (productoExistente.cantidad === 0) {
+            carrito = carrito.filter(producto => producto.id !== productoId);
+        }
+    }
+
+    actualizarCantidadEnTarjeta(card, productoId);
+    actualizarCarritoNotificacion();
+    actualizarCarritoDetalle();
+}
+
+// Manejador de clics para los botones de añadir y eliminar del carrito
+function handleAddRemoveButtonClick(event) {
+    event.stopPropagation(); // Evitar que el clic abra el modal
+
+    if (event.target.classList.contains('add')) {
+        agregarAlCarrito(event.target);
+    } else if (event.target.classList.contains('remove')) {
+        quitarDelCarrito(event.target);
+    }
+}
+
+// Asignar eventos a los botones de "Añadir al carrito" y "Eliminar del carrito"
+function asignarEventosBotones() {
+    document.querySelectorAll('.button-container .add, .button-container .remove').forEach(button => {
+        // Antes de agregar el evento, asegúrate de que no hay listeners duplicados
+        button.removeEventListener('click', handleAddRemoveButtonClick);
+        button.addEventListener('click', handleAddRemoveButtonClick);
+    });
+}
+
+// Llama a la función para asegurarte de que los botones tienen sus eventos asignados
+asignarEventosBotones();
+
+// Cerrar el modal cuando se hace clic en la "X"
+document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('infoModal').style.display = 'none';
+});
+
+// Cerrar el modal cuando se hace clic fuera del contenido del modal
+window.addEventListener('click', function(event) {
+    if (event.target === document.getElementById('infoModal')) {
+        document.getElementById('infoModal').style.display = 'none';
+    }
+});
+// Slider functionality
+// Slider functionality
+let currentSlide = 0;
+const slideInterval = 4000; // Intervalo en milisegundos (3 segundos)
+
+function showSlide(index) {
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    
+    if (index >= totalSlides) currentSlide = 0;
+    if (index < 0) currentSlide = totalSlides - 1;
+
+    const offset = -currentSlide * 100;
+    document.querySelector('.slider').style.transform = `translateX(${offset}%)`;
+}
+
+// Function to move to the next slide
+function nextSlide() {
+    currentSlide++;
+    showSlide(currentSlide);
+}
+
+// Automatic slide change
+let slideTimer = setInterval(nextSlide, slideInterval);
+
+document.querySelector('.prev').addEventListener('click', () => {
+    currentSlide--;
+    showSlide(currentSlide);
+    resetTimer(); // Reset the automatic slide change timer
+});
+
+document.querySelector('.next').addEventListener('click', () => {
+    currentSlide++;
+    showSlide(currentSlide);
+    resetTimer(); // Reset the automatic slide change timer
+});
+
+// Function to reset the automatic slide change timer
+function resetTimer() {
+    clearInterval(slideTimer);
+    slideTimer = setInterval(nextSlide, slideInterval);
+}
+
+// Show the first slide initially
+showSlide(currentSlide);
+
+
+</script>
+</body>
+</html>
